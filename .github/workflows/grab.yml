@@ -3,6 +3,8 @@ name: grab-roadtest
 on:
   schedule:
     - cron: "7,37 * * * *"   # backup only: GitHub often skips scheduled runs
+  push:
+    branches: ["claude/kick-*"]   # watchdog agent restarts the chain by pushing here
   workflow_dispatch:
     inputs:
       args:
@@ -16,6 +18,7 @@ concurrency:
 
 permissions:
   actions: write   # lets the job start the next run, or disable itself when done
+  contents: write  # pushes status.md to the `status` branch for the watchdog agent
 
 jobs:
   grab:
@@ -49,13 +52,32 @@ jobs:
         run: |
           set +e
           if [ -n "${{ github.event.inputs.args }}" ]; then
-            python icbc_roadtest.py ${{ github.event.inputs.args }}
-            exit $?
+            python -u icbc_roadtest.py ${{ github.event.inputs.args }} 2>&1 | tee "$RUNNER_TEMP/hunt.log"
+            code=${PIPESTATUS[0]}
+            echo "$code" > "$RUNNER_TEMP/exit_code"
+            exit $code
           fi
-          python icbc_roadtest.py --run-minutes 345
-          code=$?
+          python -u icbc_roadtest.py --run-minutes 345 2>&1 | tee "$RUNNER_TEMP/hunt.log"
+          code=${PIPESTATUS[0]}
+          echo "$code" > "$RUNNER_TEMP/exit_code"
           if [ $code -eq 10 ]; then echo "done=true" >> "$GITHUB_OUTPUT"; exit 0; fi
           exit $code
+      - name: Publish status
+        # public status.md on the `status` branch: the watchdog agent reads it without a GitHub token
+        if: always() && steps.ready.outputs.ok == 'true'
+        run: |
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          dir="$RUNNER_TEMP/status"
+          if git fetch -q origin status 2>/dev/null; then git worktree add -q "$dir" origin/status -B status
+          else git worktree add -q --orphan -b status "$dir"; fi
+          {
+            echo "run: ${{ github.run_id }} (${{ github.event_name }}) args='${{ github.event.inputs.args }}'"
+            echo "finished: $(TZ=America/Vancouver date '+%Y-%m-%d %H:%M:%S %Z')"
+            echo "exit code: $(cat "$RUNNER_TEMP/exit_code" 2>/dev/null || echo none) (10 = done: booked best or change would cost \$25)"
+            echo; echo '```'; tail -n 120 "$RUNNER_TEMP/hunt.log" 2>/dev/null; echo '```'
+          } > "$dir/status.md"
+          cd "$dir" && git add status.md && git commit -qm "status $(TZ=America/Vancouver date '+%m-%d %H:%M')" && git push -q origin status
       - name: Disable schedule when done
         if: steps.grab.outputs.done == 'true'
         env:
