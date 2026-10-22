@@ -163,6 +163,12 @@ class Icbc:
         self.session.headers.pop("Authorization", None)
         r = self.session.put(API + "/webLogin/webLogin", json=self.creds, timeout=30,
                              headers={"Cache-control": "no-cache, no-store", "pragma": "no-cache"})
+        if r.status_code == 403:
+            # ICBC checks the network only after the credentials pass; the web UI shows "cannot be used
+            # outside Canada or the United States". Cloud IPs (GitHub Actions) get this. Retrying won't help.
+            raise SystemExit("ICBC refused login from this network (HTTP 403). Run from a home connection.")
+        if r.status_code == 400:
+            raise SystemExit(f"ICBC rejected the login details: {r.text[:200]}")
         if r.status_code >= 400:
             raise ApiError(r.status_code, r.text)
         token = r.headers.get("Authorization")
