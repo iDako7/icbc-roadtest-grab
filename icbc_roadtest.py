@@ -16,12 +16,16 @@ are set the code is read over IMAP; you can always type it into the terminal too
 ICBC charges $25 to cancel or reschedule within 48 hours of the test, so an existing
 booking is only ever upgraded while it is more than 48 h (+ --fee-margin) away.
 
-Slot tiers (higher is better, 0 = never book):
-  4  Mon-Fri 10:00-13:30   midday: after rush hour and school drop-off
-  3  Mon-Fri 09:30-10:00, 13:30-14:15
-  2  Mon-Fri before 09:30  morning rush + school drop-off
-  1  Sat/Sun
-  0  Mon-Fri after 14:15   school dismissal, then evening rush
+Time-of-day tier (tier()):
+  4  10:00-13:30   midday: after rush hour and school drop-off
+  3  09:30-10:00, 13:30-14:15
+  2  before 09:30   morning rush + school drop-off
+  0  after 14:15    school dismissal, then evening rush (never book)
+Slot rank (rank(), higher is better): day first, then time tier.
+  6/5/4  Mon or Wed, tier 4/3/2
+  3/2/1  Tue, Thu or Fri, tier 4/3/2
+  1      Sat/Sun (Wayburne does not test on weekends anyway)
+  0      tier 0 -> never book
 
 Personal info comes from env vars (or .env next to this file):
   ICBC_LAST_NAME, ICBC_LICENCE, ICBC_KEYWORD, optional GMAIL_ADDRESS,
@@ -125,15 +129,29 @@ def poll_seconds(now, windows, default):
     return default
 
 
+PREFERRED_DAYS = (0, 2)  # Mon, Wed
+BEST_RANK = 6
+
+
+def rank(when):
+    t = tier(when)
+    if t == 0:
+        return 0
+    if when.weekday() >= 5:
+        return 1
+    return t + 2 if when.weekday() in PREFERRED_DAYS else t - 1
+
+
 class Slot:
     def __init__(self, raw):
         self.raw = raw
         self.when = dt.datetime.combine(dt.date.fromisoformat(raw["appointmentDt"]["date"]),
                                         dt.time.fromisoformat(raw["startTm"]), TZ)
         self.tier = tier(self.when)
+        self.rank = rank(self.when)
 
     def __repr__(self):
-        return f"{self.when:%a %m-%d %H:%M}(t{self.tier})"
+        return f"{self.when:%a %m-%d %H:%M}(r{self.rank})"
 
 
 class ApiError(Exception):
@@ -164,9 +182,9 @@ class Icbc:
         r = self.session.put(API + "/webLogin/webLogin", json=self.creds, timeout=30,
                              headers={"Cache-control": "no-cache, no-store", "pragma": "no-cache"})
         if r.status_code == 403:
-            # ICBC checks the network only after the credentials pass; the web UI shows "cannot be used
-            # outside Canada or the United States". Cloud IPs (GitHub Actions) get this. Retrying won't help.
-            raise SystemExit("ICBC refused login from this network (HTTP 403). Run from a home connection.")
+            # the web UI calls this "cannot be used outside Canada or the United States", but a wrong
+            # last name also produced it (from GitHub Actions); either way retrying won't help
+            raise SystemExit("ICBC refused the login (HTTP 403): check the last name / licence / keyword")
         if r.status_code == 400:
             raise SystemExit(f"ICBC rejected the login details: {r.content.decode('utf-8', 'replace')[:200]}")
         if r.status_code >= 400:
@@ -412,8 +430,8 @@ class Grabber:
     def wanted(self, slots):
         earliest = dt.datetime.now(TZ) + dt.timedelta(minutes=self.args.lead_minutes)
         out = [s for s in slots if self.args.start <= s.when < self.args.end
-               and s.when >= earliest and s.tier > 0]
-        return sorted(out, key=lambda s: (-s.tier, s.when))
+               and s.when >= earliest and s.rank > 0]
+        return sorted(out, key=lambda s: (-s.rank, s.when))
 
     # ---------- booking ----------
     def take(self, slot, existing):
@@ -462,8 +480,8 @@ class Grabber:
         in_window = existing is not None and self.args.start <= appt_when(existing) < self.args.end
         if existing:
             cur = Slot(existing)
-            if in_window and cur.tier >= 4:
-                log(f"holding {cur}, already the best tier; done")
+            if in_window and cur.rank >= BEST_RANK:
+                log(f"holding {cur}, already the best rank; done")
                 return "done"
             if not self.free_to_change(existing):
                 log(f"holding {cur}; changing it now would cost $25; done")
@@ -474,8 +492,8 @@ class Grabber:
         from_date = max(dt.date.today(), self.args.start.date())
         slots = self.search(from_date)
         wanted = self.wanted(slots)
-        current_tier = Slot(existing).tier if in_window else 0
-        better = [s for s in wanted if s.tier > current_tier]
+        current_rank = Slot(existing).rank if in_window else 0
+        better = [s for s in wanted if s.rank > current_rank]
         log(f"{len(slots)} open slot(s), {len(wanted)} in window {wanted[:6]}"
             + (f"; holding {Slot(existing)}{'' if in_window else ' as backup'}" if existing else ""))
         for slot in better:
@@ -519,7 +537,7 @@ class Grabber:
         wanted = set(map(id, self.wanted(slots)))
         log(f"{len(slots)} open slot(s) at posId {self.pos_id}:")
         for s in sorted(slots, key=lambda s: s.when):
-            print(f"   {s.when:%a %Y-%m-%d %H:%M}  tier {s.tier}  {'<= in window' if id(s) in wanted else ''}")
+            print(f"   {s.when:%a %Y-%m-%d %H:%M}  rank {s.rank}  {'<= in window' if id(s) in wanted else ''}")
         return 0
 
     def backup(self):

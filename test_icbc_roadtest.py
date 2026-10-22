@@ -103,6 +103,13 @@ class GrabberTest(unittest.TestCase):
         self.assertEqual([at(MON, 8, 30), at(MON, 9, 30), at(MON, 10, 0), at(MON, 13, 29), at(MON, 13, 30),
                           at(MON, 14, 15), at(MON, 14, 30), at(SAT, 13, 0)], [2, 3, 4, 4, 3, 3, 0, 1])
 
+    def test_rank_is_day_first(self):
+        tue, wed = MON + dt.timedelta(days=1), MON + dt.timedelta(days=2)
+        r = lambda d, h, mi: m.rank(dt.datetime.combine(d, dt.time(h, mi), TZ))
+        order = [r(MON, 12, 40), r(wed, 9, 55), r(MON, 8, 35), r(tue, 12, 40), r(tue, 14, 0), r(tue, 9, 15)]
+        self.assertEqual(order, [6, 5, 4, 3, 2, 1])
+        self.assertEqual([r(wed, 14, 55), r(tue, 15, 35)], [0, 0])
+
     def test_finds_burnaby_claims_centre(self):
         g, _ = make(FakeIcbc(self.SLOTS))
         self.assertEqual(g.pos_id, 274)
@@ -112,12 +119,12 @@ class GrabberTest(unittest.TestCase):
         fake = FakeIcbc(self.SLOTS)
         g, _ = make(fake)
         g.tick()
-        self.assertEqual(fake.appts[0]["startTm"], "12:00")
+        self.assertEqual(fake.appts[0]["startTm"], "08:40")  # Monday beats Tuesday midday
         calls = {p: body for _, p, body in fake.calls}
         search = calls["/web/getAvailableAppointments"]
         self.assertEqual((search["aPosID"], search["examType"], search["examDate"], search["lastName"]),
                          (274, "5-R-1", SAT.isoformat(), "DOE"))
-        self.assertEqual(fake.locked["signature"], "sig4")
+        self.assertEqual(fake.locked["signature"], "sig2")
         self.assertEqual(fake.locked["drvrDriver"], {"drvrId": 777})
         sent = next(b for _, p, b in fake.calls if p == "/web/sendOTP")
         self.assertEqual((sent["method"], sent["drvrID"], sent["bookedTs"]), ("E", 777, fake.locked["bookedTs"]))
@@ -158,7 +165,7 @@ class GrabberTest(unittest.TestCase):
         self.assertNotIn("/web/getAvailableAppointments", fake.paths())
 
     def test_stops_once_best_tier_held(self):
-        fake = FakeIcbc(self.SLOTS, appts=[slot(MON + dt.timedelta(days=1), "12:00", 4)])
+        fake = FakeIcbc(self.SLOTS, appts=[slot(MON, "12:00", 6)])
         g, _ = make(fake)
         self.assertEqual(g.tick(), "done")
 
