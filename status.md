@@ -1,69 +1,126 @@
-run: 39701837228 (workflow_dispatch) args='--list'
-finished: 2026-10-21 17:47:58 PDT
+run: 39734112826 (workflow_dispatch) args=''
+finished: 2026-10-22 05:14:05 PDT
 exit code: 0 (10 = done: booked best or change would cost $25)
 
 ```
-[10-21 17:47:56] Gmail IMAP login OK; one-time codes will be read automatically
-[10-21 17:47:57] logged in
-[10-21 17:47:57] eligible: 5-R-1 Class 5 (full licence) Road Test earliest 2026-10-22
-[10-21 17:47:57] centre 2: Burnaby driver licensing | 3880 Lougheed Hwy, Burnaby, BC V5C 6N4
-[10-21 17:47:57] centre 274: Burnaby claim centre (Wayburne Drive) | 4399 Wayburne Drive, Burnaby, BC V5G 3X7
-[10-21 17:47:57] centre 275: Vancouver claim centre (Kingsway) | 999 Kingsway, Vancouver, BC V5V 4Z7
-[10-21 17:47:57] centre 8: North Vancouver driver licensing | 1331 Marine Dr, North Vancouver, BC V7P 3E5
-[10-21 17:47:57] centre 9: Vancouver driver licensing (Point Grey) | 4126 Macdonald St, Vancouver, BC V6L 2P2
-[10-21 17:47:57] centre 93: Richmond driver licensing (Lansdowne Centre mall) | 5300 No 3 Rd #402, Richmond, BC V6X 2X9
-[10-21 17:47:57] centre 11: Surrey driver licensing | 13426 78 Ave, Surrey, BC V3W 8J6
-[10-21 17:47:57] centre 281: Guildford Boardwalk road test centre (Boardwalk mall) | 15285 - 101st Ave, Surrey, BC V3R 9V8
-[10-21 17:47:57] centre 73: Port Coquitlam driver licensing | 1930 Oxford Connector, Port Coquitlam, BC V3C 0A4
-[10-21 17:47:57] centre 153: Langley driver licensing (Willowbrook Center) | 19950 Willowbrook Dr j7, Langley, BC V2Y 1K9
-[10-21 17:47:57] exam 5-R-1, centre posId 274
-[10-21 17:47:57] 48 open slot(s) at posId 274:
-   Tue 2027-01-26 13:20  rank 3  
-   Thu 2027-01-28 15:35  rank 0  
-   Mon 2027-02-01 08:35  rank 4  
-   Mon 2027-02-01 14:00  rank 5  
-   Mon 2027-02-01 15:35  rank 0  
-   Tue 2027-02-02 08:35  rank 1  
-   Tue 2027-02-02 09:55  rank 2  
-   Tue 2027-02-02 11:30  rank 3  
-   Tue 2027-02-02 12:40  rank 3  
-   Tue 2027-02-02 13:20  rank 3  
-   Tue 2027-02-02 14:55  rank 0  
-   Tue 2027-02-02 15:35  rank 0  
-   Wed 2027-02-03 09:15  rank 4  
-   Wed 2027-02-03 11:30  rank 6  
-   Wed 2027-02-03 12:40  rank 6  
-   Wed 2027-02-03 13:20  rank 6  
-   Wed 2027-02-03 15:35  rank 0  
-   Thu 2027-02-04 08:35  rank 1  
-   Thu 2027-02-04 11:30  rank 3  
-   Thu 2027-02-04 12:40  rank 3  
-   Thu 2027-02-04 15:35  rank 0  
-   Fri 2027-02-05 08:35  rank 1  
-   Fri 2027-02-05 12:40  rank 3  
-   Fri 2027-02-05 14:55  rank 0  
-   Mon 2027-02-08 09:15  rank 4  
-   Mon 2027-02-08 10:50  rank 6  
-   Mon 2027-02-08 12:40  rank 6  
-   Mon 2027-02-08 14:00  rank 5  
-   Mon 2027-02-08 14:55  rank 0  
-   Tue 2027-02-09 08:35  rank 1  
-   Tue 2027-02-09 10:50  rank 3  
-   Tue 2027-02-09 12:40  rank 3  
-   Tue 2027-02-09 15:35  rank 0  
-   Wed 2027-02-10 09:15  rank 4  
-   Wed 2027-02-10 11:30  rank 6  
-   Wed 2027-02-10 12:40  rank 6  
-   Wed 2027-02-10 13:20  rank 6  
-   Wed 2027-02-10 14:55  rank 0  
-   Wed 2027-02-10 15:35  rank 0  
-   Thu 2027-02-11 08:35  rank 1  
-   Thu 2027-02-11 09:15  rank 1  
-   Thu 2027-02-11 10:50  rank 3  
-   Thu 2027-02-11 11:30  rank 3  
-   Thu 2027-02-11 12:40  rank 3  
-   Thu 2027-02-11 13:20  rank 3  
-   Thu 2027-02-11 14:55  rank 0  
-   Thu 2027-02-11 15:35  rank 0  
-   Fri 2027-02-12 09:15  rank 1  
+[10-22 03:19:16] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:20:26] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:21:23] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:22:29] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:23:35] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:24:46] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:25:44] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:26:54] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:27:56] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:28:53] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:29:54] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:30:43] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:31:44] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:32:49] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:33:48] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:34:58] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:36:00] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:36:50] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:37:48] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:38:40] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:39:31] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:40:41] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:41:29] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:42:39] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:43:30] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:44:28] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:45:40] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:46:53] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:48:04] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:48:55] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:49:52] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:50:59] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:51:56] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:52:59] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:53:48] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:54:52] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:55:47] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:56:51] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:57:51] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 03:58:51] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:00:00] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:00:59] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:02:03] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:02:59] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:03:58] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:05:08] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:06:06] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:07:03] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:08:11] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:09:04] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:09:52] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:10:45] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:11:54] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:12:48] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:13:53] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:14:44] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:15:46] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:16:50] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:17:57] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:19:01] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:19:56] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:20:53] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:21:44] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:22:47] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:23:59] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:25:04] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:26:10] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:27:07] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:28:04] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:28:53] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:29:44] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:30:49] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:31:50] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:32:39] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:33:34] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:34:43] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:35:46] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:36:39] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:37:45] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:38:51] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:39:59] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:41:04] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:42:11] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:43:20] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:44:31] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:45:38] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:46:28] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:47:34] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:48:38] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:49:29] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:50:27] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:51:17] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:52:16] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:53:17] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:54:06] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:54:58] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:55:54] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:56:53] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:57:48] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 04:58:49] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 05:00:00] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 05:01:08] 48 open slot(s), 0 in window []; holding Tue 10-27 09:15(r1)
+[10-22 05:02:10] 48 open slot(s), 1 in window [Mon 10-26 08:35(r4)]; holding Tue 10-27 09:15(r1)
+[10-22 05:02:10] locked Mon 10-26 08:35(r4); sending one-time code by email
+
+>>> ICBC emailed a one-time code. Waiting for it from Gmail or the terminal.
+>>> Type the code and press Enter: 
+[10-22 05:02:26] got code 453629 from Gmail
+[10-22 05:02:27] BOOKED Mon 10-26 08:35(r4)
+[10-22 05:03:37] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
+[10-22 05:04:29] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
+[10-22 05:05:17] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
+[10-22 05:06:07] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
+[10-22 05:07:19] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
+[10-22 05:08:11] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
+[10-22 05:09:11] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
+[10-22 05:10:08] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
+[10-22 05:11:10] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
+[10-22 05:12:02] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
+[10-22 05:13:00] 48 open slot(s), 0 in window []; holding Mon 10-26 08:35(r4)
 ```
