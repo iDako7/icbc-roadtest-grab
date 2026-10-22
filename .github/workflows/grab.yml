@@ -92,4 +92,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "${{ steps.grab.outcome }}" = "failure" ]; then sleep 300; fi
-          gh workflow run grab.yml --repo "$GITHUB_REPOSITORY" --ref main
+          # stay on this branch, so a hotfix kicked from claude/kick-* keeps running its own code
+          gh workflow run grab.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
