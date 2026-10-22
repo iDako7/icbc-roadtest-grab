@@ -168,7 +168,7 @@ class Icbc:
             # outside Canada or the United States". Cloud IPs (GitHub Actions) get this. Retrying won't help.
             raise SystemExit("ICBC refused login from this network (HTTP 403). Run from a home connection.")
         if r.status_code == 400:
-            raise SystemExit(f"ICBC rejected the login details: {r.text[:200]}")
+            raise SystemExit(f"ICBC rejected the login details: {r.content.decode('utf-8', 'replace')[:200]}")
         if r.status_code >= 400:
             raise ApiError(r.status_code, r.text)
         token = r.headers.get("Authorization")
