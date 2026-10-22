@@ -4,12 +4,18 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Probe ICBC from the runner with fake credentials
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Script login code with fake credentials
         run: |
-          curl -s -o out.txt -w 'login(fake creds): HTTP %{http_code}\n' -X PUT https://onlinebusiness.icbc.com/deas-api/v1/webLogin/webLogin \
-            -H 'Content-Type: application/json' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36' \
-            -H 'Origin: https://onlinebusiness.icbc.com' -H 'Referer: https://onlinebusiness.icbc.com/webdeas-ui/booking' \
-            -d '{"drvrLastName":"TESTER","licenceNumber":"1000000","keyword":"0000"}'
-          head -c 300 out.txt; echo
-          curl -s -o /dev/null -w 'ui page: HTTP %{http_code}\n' https://onlinebusiness.icbc.com/webdeas-ui/
-          curl -s https://ipinfo.io/json | grep -E '"(city|country|org)"'
+          python - <<'PY'
+          import icbc_roadtest as m
+          m.save = lambda *a: None
+          try:
+              m.Icbc("TESTER", "1000000", "0000").login()
+          except Exception as e:
+              print("script login(fake creds):", e)
+          PY
