@@ -84,8 +84,9 @@ def load_env(path):
 
 def notify(title, message, urgent=False):
     try:  # macOS banner + sound
-        subprocess.run(["osascript", "-e", f"display notification {json.dumps(message)} "
-                        f"with title {json.dumps(title)} sound name \"Glass\""], timeout=10)
+        q = lambda s: json.dumps(s, ensure_ascii=False)  # AppleScript has no \u escapes
+        subprocess.run(["osascript", "-e", f"display notification {q(message)} "
+                        f"with title {q(title)} sound name \"Glass\""], timeout=10, capture_output=True)
     except (OSError, subprocess.SubprocessError):
         pass
     topic = os.environ.get("NTFY_TOPIC", "").strip()
@@ -154,6 +155,11 @@ class Slot:
         return f"{self.when:%a %m-%d %H:%M}(r{self.rank})"
 
 
+def compact(body):
+    # /web/lock answers 500 to JSON with spaces after , and : (requests' default); browsers send compact JSON
+    return json.dumps(body, separators=(",", ":"), ensure_ascii=False).encode()
+
+
 class ApiError(Exception):
     def __init__(self, status, body):
         super().__init__(f"HTTP {status}: {body[:300]}")
@@ -172,14 +178,14 @@ class Icbc:
         self.logged_in_at = 0.0
 
     def call(self, method, path, body):
-        r = self.session.request(method, API + path, json=body, timeout=30)
+        r = self.session.request(method, API + path, data=compact(body), timeout=30)
         if r.status_code >= 400:
             raise ApiError(r.status_code, r.text)
         return r.json() if r.content else None
 
     def login(self):
         self.session.headers.pop("Authorization", None)
-        r = self.session.put(API + "/webLogin/webLogin", json=self.creds, timeout=30,
+        r = self.session.put(API + "/webLogin/webLogin", data=compact(self.creds), timeout=30,
                              headers={"Cache-control": "no-cache, no-store", "pragma": "no-cache"})
         if r.status_code == 403:
             # the web UI calls this "cannot be used outside Canada or the United States", but a wrong

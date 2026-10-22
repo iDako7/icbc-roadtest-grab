@@ -1,5 +1,6 @@
 """Offline tests: a fake ICBC API replays the request/response shapes from the webdeas-ui bundle."""
 import datetime as dt
+import json as jsonlib
 import types
 import unittest
 from unittest import mock
@@ -44,11 +45,13 @@ class FakeIcbc:
                     {"code": "5-R-1", "description": "Class 5 road test", "eed": {"date": TODAY.isoformat()}}],
                 "webAappointments": [dict(a) for a in self.appts]}
 
-    def put(self, url, json, timeout, headers=None):
-        self.calls.append(("PUT", url.split("/v1")[1], json))
+    def put(self, url, data, timeout, headers=None):
+        self.calls.append(("PUT", url.split("/v1")[1], jsonlib.loads(data)))
         return Resp(200, self.user(), {"Authorization": "Bearer t"})
 
-    def request(self, method, url, json, timeout):
+    def request(self, method, url, data, timeout):
+        assert b", " not in data and b": " not in data, "JSON must be compact"
+        json = jsonlib.loads(data)
         path = url.split("/v1")[1]
         self.calls.append((method, path, json))
         if path == "/web/getNearestPos":
