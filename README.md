@@ -9,7 +9,13 @@
 3. **Gmail 应用专用密码**：先开启两步验证，然后到 <https://myaccount.google.com/apppasswords> 生成一个，填进 `GMAIL_APP_PASSWORD`
 4. （可选）`NTFY_TOPIC`：在手机 ntfy app 里订阅同名 topic，抢到号时会推送到手机
 
-## 在 GitHub Actions 上跑（不用开着电脑）
+## 实测（2026-10-21）
+
+- 4399 Wayburne 只在周一到周五考试，时段固定为 8:35、9:15、9:55、10:50、11:30、12:40、13:20、14:00、14:55、15:35
+- 窗口外已有的预约只算保底：窗口内任何可订的时段都会通过 rebook 把它换掉
+- 在 GitHub Actions 上用正确信息登录时 ICBC 返回过 403（当时姓填错了，所以还不能完全确定原因）；家里网络正常
+
+## 在 GitHub Actions 上跑（目前已停用，见上）
 
 `.github/workflows/grab.yml` 沿用 icbc-wed-grab 的接力方案：每次运行约 5.75 小时，结束时自己触发下一次，cron 只做兜底。抢到最高档或者进入收费期后（退出码 10），工作流会自动停用自己。
 
@@ -26,6 +32,7 @@ Secrets 没设置好时，工作流不会抢号，也不会接力；运行失败
 
 ```bash
 python3 icbc_roadtest.py --list            # 登录 + 列出所有空位和档位，不做任何预约
+python3 icbc_roadtest.py --backup          # 订一个最早的好时段做保底并保留；抢号时免费改期换掉它
 python3 icbc_roadtest.py --trial           # 实验：订一个窗口外且 72 小时后的号，确认后立刻取消
 caffeinate -i python3 icbc_roadtest.py     # 正式抢号（caffeinate 防止 Mac 睡眠）
 python3 icbc_roadtest.py --dry-run --once  # 只看会选哪个，不锁位

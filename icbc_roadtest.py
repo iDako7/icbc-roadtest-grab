@@ -458,9 +458,11 @@ class Grabber:
     def tick(self):
         self.refresh_login()
         existing = self.existing()
+        # a booking outside the window is only a backup: any slot in the window beats it
+        in_window = existing is not None and self.args.start <= appt_when(existing) < self.args.end
         if existing:
             cur = Slot(existing)
-            if cur.tier >= 4:
+            if in_window and cur.tier >= 4:
                 log(f"holding {cur}, already the best tier; done")
                 return "done"
             if not self.free_to_change(existing):
@@ -472,10 +474,10 @@ class Grabber:
         from_date = max(dt.date.today(), self.args.start.date())
         slots = self.search(from_date)
         wanted = self.wanted(slots)
-        current_tier = Slot(existing).tier if existing else 0
+        current_tier = Slot(existing).tier if in_window else 0
         better = [s for s in wanted if s.tier > current_tier]
         log(f"{len(slots)} open slot(s), {len(wanted)} in window {wanted[:6]}"
-            + (f"; holding {Slot(existing)}" if existing else ""))
+            + (f"; holding {Slot(existing)}{'' if in_window else ' as backup'}" if existing else ""))
         for slot in better:
             if self.args.dry_run:
                 log(f"[dry-run] would book {slot}")
@@ -518,6 +520,23 @@ class Grabber:
         log(f"{len(slots)} open slot(s) at posId {self.pos_id}:")
         for s in sorted(slots, key=lambda s: s.when):
             print(f"   {s.when:%a %Y-%m-%d %H:%M}  tier {s.tier}  {'<= in window' if id(s) in wanted else ''}")
+        return 0
+
+    def backup(self):
+        """Book the earliest good slot anywhere as a fallback; the hunt later rebooks over it for free."""
+        if self.existing():
+            sys.exit("you already have a road test booked; it already serves as the backup")
+        safe = dt.datetime.now(TZ) + dt.timedelta(hours=49)
+        slots = sorted(self.search(dt.date.today()), key=lambda s: s.when)
+        pool = [s for s in slots if s.when > safe and s.tier >= 3] or [s for s in slots if s.when > safe and s.tier > 0]
+        if not pool:
+            sys.exit("no slot >49 h away to use as a backup")
+        slot = pool[0]
+        log(f"backup: booking {slot} at posId {self.pos_id} and keeping it")
+        if not self.args.yes and input("Go ahead? [y/N] ").strip().lower() != "y":
+            return 0
+        if not self.take(slot, None):
+            sys.exit("backup booking failed; see log above and icbc_debug/")
         return 0
 
     def trial(self):
@@ -565,6 +584,8 @@ def main():
     mode = p.add_mutually_exclusive_group()
     mode.add_argument("--list", action="store_true", help="log in, list open slots, exit")
     mode.add_argument("--trial", action="store_true", help="book a far slot then cancel it")
+    mode.add_argument("--backup", action="store_true",
+                      help="book the earliest good slot anywhere and keep it; the hunt rebooks over it")
     mode.add_argument("--cancel", action="store_true", help="cancel the current road test booking")
     p.add_argument("--manual-otp", action="store_true",
                    help="allow hunting without Gmail; you must type the code yourself")
@@ -598,6 +619,8 @@ def main():
         return g.list_slots()
     if args.trial:
         return g.trial()
+    if args.backup:
+        return g.backup()
     if args.cancel:
         appt = g.existing()
         if not appt:

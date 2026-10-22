@@ -134,6 +134,22 @@ class GrabberTest(unittest.TestCase):
         self.assertEqual(rebook["appointment"]["drvrDriver"]["licenseNumber"], "12345678")
         self.assertEqual(fake.appts[0]["startTm"], "08:40")
 
+    def test_backup_outside_window_is_replaced_even_if_top_tier(self):
+        far = MON + dt.timedelta(days=90)
+        fake = FakeIcbc(self.SLOTS[:2], appts=[slot(far, "13:20", 8)])
+        g, _ = make(fake)
+        self.assertIsNone(g.tick())
+        self.assertIn("/web/rebook", fake.paths())
+        self.assertEqual(fake.appts[0]["startTm"], "08:40")  # tier 2 in window beats tier 4 in January
+
+    def test_backup_mode_books_earliest_good_slot_and_keeps_it(self):
+        fake = FakeIcbc([slot(MON + dt.timedelta(days=90), "08:35", 1), slot(MON + dt.timedelta(days=91), "13:20", 2),
+                         slot(MON + dt.timedelta(days=92), "11:30", 3)])
+        g, _ = make(fake, yes=True)
+        g.backup()
+        self.assertEqual(fake.appts[0]["startTm"], "13:20")
+        self.assertNotIn("/web/cancel", fake.paths())
+
     def test_never_touches_booking_inside_48h(self):
         soon = TODAY + dt.timedelta(days=1)
         fake = FakeIcbc(self.SLOTS, appts=[slot(soon, "08:40", 9)])
