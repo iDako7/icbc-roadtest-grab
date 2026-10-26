@@ -355,6 +355,7 @@ class Grabber:
         self.args, self.icbc, self.otp = args, icbc, otp
         self.exam_code = None
         self.pos_id = args.pos_id
+        self.alerted_taken = False
 
     # ---------- setup ----------
     def setup(self):
@@ -402,6 +403,14 @@ class Grabber:
         for a in self.icbc.user.get("webAappointments") or []:
             # a test already taken (e.g. one just failed) stays listed for a while; it is not a booking to hold
             if a["dlExam"]["code"] == self.exam_code and appt_when(a) > now:
+                return a
+        return None
+
+    def taken_test(self):
+        """A test already taken that ICBC still lists as ACTIVE; /web/book answers 400 until it clears."""
+        now = dt.datetime.now(TZ)
+        for a in self.icbc.user.get("webAappointments") or []:
+            if a["dlExam"]["code"] == self.exam_code and appt_when(a) <= now:
                 return a
         return None
 
@@ -498,6 +507,14 @@ class Grabber:
         better = [s for s in wanted if s.rank > current_rank]
         log(f"{len(slots)} open slot(s), {len(wanted)} in window {wanted[:6]}"
             + (f"; holding {Slot(existing)}{'' if in_window else ' as backup'}" if existing else ""))
+        taken = better and not existing and self.taken_test()
+        if taken:
+            # every try would lock the slot and email a code for nothing: watch, push once, wait for it to clear
+            log(f"ICBC still lists the test taken {appt_when(taken):%m-%d %H:%M}; not booking {better[0]} until it clears")
+            if not self.alerted_taken:
+                notify("ICBC: 有号但还不能订", f"{better[0].when:%m-%d %a %H:%M} 有号，但 {appt_when(taken):%m-%d} 那场还没被 ICBC 清掉，暂时订不了")
+                self.alerted_taken = True
+            return None
         for slot in better:
             if self.args.dry_run:
                 log(f"[dry-run] would book {slot}")
@@ -546,6 +563,8 @@ class Grabber:
         """Book the earliest good slot anywhere as a fallback; the hunt later rebooks over it for free."""
         if self.existing():
             sys.exit("you already have a road test booked; it already serves as the backup")
+        if self.taken_test():
+            sys.exit(f"ICBC still lists the test taken {appt_when(self.taken_test()):%m-%d}; book the backup once it clears")
         safe = dt.datetime.now(TZ) + dt.timedelta(hours=49)
         slots = sorted(self.search(dt.date.today()), key=lambda s: s.when)
         pool = [s for s in slots if s.when > safe and s.tier >= 2] or [s for s in slots if s.when > safe and s.tier > 0]

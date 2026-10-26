@@ -160,10 +160,19 @@ class GrabberTest(unittest.TestCase):
         self.assertEqual(fake.appts[0]["startTm"], "13:20")
         self.assertNotIn("/web/cancel", fake.paths())
 
-    def test_test_already_taken_is_not_a_booking(self):
+    def test_waits_for_a_test_already_taken_to_clear_then_books(self):
         fake = FakeIcbc(self.SLOTS, appts=[slot(TODAY - dt.timedelta(days=1), "08:35", 9)])
         g, _ = make(fake)
-        self.assertIsNone(g.tick())
+        with mock.patch.object(m, "notify") as push:
+            self.assertIsNone(g.tick())
+            self.assertIsNone(g.tick())
+        self.assertNotIn("/web/lock", fake.paths())
+        self.assertEqual(push.call_count, 1, "one push, not one per poll")
+        with self.assertRaises(SystemExit):
+            g.backup()
+        fake.appts = []  # ICBC clears it; seen at the next re-login
+        g.icbc.login()
+        g.tick()
         self.assertIn("/web/book", fake.paths())
         self.assertNotIn("/web/rebook", fake.paths())
 
