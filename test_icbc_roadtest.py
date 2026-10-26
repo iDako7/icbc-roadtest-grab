@@ -103,15 +103,15 @@ class GrabberTest(unittest.TestCase):
 
     def test_tiers(self):
         at = lambda d, h, mi: m.tier(dt.datetime.combine(d, dt.time(h, mi), TZ))
-        self.assertEqual([at(MON, 8, 30), at(MON, 9, 30), at(MON, 10, 0), at(MON, 13, 29), at(MON, 13, 30),
-                          at(MON, 14, 15), at(MON, 14, 30), at(SAT, 13, 0)], [2, 3, 4, 4, 3, 3, 0, 1])
+        self.assertEqual([at(MON, 8, 35), at(MON, 9, 15), at(MON, 9, 55), at(MON, 10, 50), at(MON, 13, 20),
+                          at(MON, 14, 0), at(MON, 14, 55), at(SAT, 13, 0)], [1, 1, 2, 2, 2, 1, 0, 0])
 
-    def test_rank_is_day_first(self):
-        tue, wed = MON + dt.timedelta(days=1), MON + dt.timedelta(days=2)
+    def test_rank_is_time_first_monday_breaks_ties(self):
+        tue = MON + dt.timedelta(days=1)
         r = lambda d, h, mi: m.rank(dt.datetime.combine(d, dt.time(h, mi), TZ))
-        order = [r(MON, 12, 40), r(wed, 9, 55), r(MON, 8, 35), r(tue, 12, 40), r(tue, 14, 0), r(tue, 9, 15)]
-        self.assertEqual(order, [6, 5, 4, 3, 2, 1])
-        self.assertEqual([r(wed, 14, 55), r(tue, 15, 35)], [0, 0])
+        order = [r(MON, 9, 55), r(MON, 13, 20), r(tue, 11, 30), r(MON, 8, 35), r(MON, 14, 0), r(tue, 9, 15)]
+        self.assertEqual(order, [4, 4, 3, 2, 2, 1])
+        self.assertEqual([r(MON, 14, 55), r(tue, 15, 35)], [0, 0])
 
     def test_finds_burnaby_claims_centre(self):
         g, _ = make(FakeIcbc(self.SLOTS))
@@ -122,12 +122,12 @@ class GrabberTest(unittest.TestCase):
         fake = FakeIcbc(self.SLOTS)
         g, _ = make(fake)
         g.tick()
-        self.assertEqual(fake.appts[0]["startTm"], "08:40")  # Monday beats Tuesday midday
+        self.assertEqual(fake.appts[0]["startTm"], "12:00")  # Tuesday midday beats Monday 08:40
         calls = {p: body for _, p, body in fake.calls}
         search = calls["/web/getAvailableAppointments"]
         self.assertEqual((search["aPosID"], search["examType"], search["examDate"], search["lastName"]),
                          (274, "5-R-1", SAT.isoformat(), "DOE"))
-        self.assertEqual(fake.locked["signature"], "sig2")
+        self.assertEqual(fake.locked["signature"], "sig4")
         self.assertEqual(fake.locked["drvrDriver"], {"drvrId": 777})
         sent = next(b for _, p, b in fake.calls if p == "/web/sendOTP")
         self.assertEqual((sent["method"], sent["drvrID"], sent["bookedTs"]), ("E", 777, fake.locked["bookedTs"]))
@@ -159,6 +159,13 @@ class GrabberTest(unittest.TestCase):
         g.backup()
         self.assertEqual(fake.appts[0]["startTm"], "13:20")
         self.assertNotIn("/web/cancel", fake.paths())
+
+    def test_test_already_taken_is_not_a_booking(self):
+        fake = FakeIcbc(self.SLOTS, appts=[slot(TODAY - dt.timedelta(days=1), "08:35", 9)])
+        g, _ = make(fake)
+        self.assertIsNone(g.tick())
+        self.assertIn("/web/book", fake.paths())
+        self.assertNotIn("/web/rebook", fake.paths())
 
     def test_never_touches_booking_inside_48h(self):
         soon = TODAY + dt.timedelta(days=1)

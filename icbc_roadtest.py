@@ -16,16 +16,14 @@ are set the code is read over IMAP; you can always type it into the terminal too
 ICBC charges $25 to cancel or reschedule within 48 hours of the test, so an existing
 booking is only ever upgraded while it is more than 48 h (+ --fee-margin) away.
 
-Time-of-day tier (tier()):
-  4  10:00-13:30   midday: after rush hour and school drop-off
-  3  09:30-10:00, 13:30-14:15
-  2  before 09:30   morning rush + school drop-off
-  0  after 14:15    school dismissal, then evening rush (never book)
-Slot rank (rank(), higher is better): day first, then time tier.
-  6/5/4  Mon or Wed, tier 4/3/2
-  3/2/1  Tue, Thu or Fri, tier 4/3/2
-  1      Sat/Sun (Wayburne does not test on weekends anyway)
-  0      tier 0 -> never book
+Time-of-day tier (tier()); Burnaby schools: elementary 8:50-15:00, secondary 8:00-15:40:
+  2  09:55-13:20   09:55 10:50 11:30 12:40 13:20: after the morning rush, well before pick-up
+  1  before 09:55 (08:35 09:15) and 14:00
+  0  after 14:15 (school dismissal, then evening rush) and weekends -> never book
+Slot rank (rank(), higher is better): time first, Monday breaks ties.
+  4/3  Mon / other weekday, tier 2
+  2/1  Mon / other weekday, tier 1
+  0    tier 0 -> never book
 
 Personal info comes from env vars (or .env next to this file):
   ICBC_LAST_NAME, ICBC_LICENCE, ICBC_KEYWORD, optional GMAIL_ADDRESS,
@@ -101,14 +99,12 @@ def notify(title, message, urgent=False):
 
 def tier(when):
     if when.weekday() >= 5:
-        return 1
+        return 0
     t = when.time()
-    if T(10, 0) <= t < T(13, 30):
-        return 4
-    if T(9, 30) <= t < T(10, 0) or T(13, 30) <= t <= T(14, 15):
-        return 3
-    if t < T(9, 30):
+    if T(9, 55) <= t <= T(13, 30):
         return 2
+    if t < T(9, 55) or t <= T(14, 15):
+        return 1
     return 0
 
 
@@ -130,17 +126,15 @@ def poll_seconds(now, windows, default):
     return default
 
 
-PREFERRED_DAYS = (0, 2)  # Mon, Wed
-BEST_RANK = 6
+PREFERRED_DAYS = (0,)  # Mon
+BEST_RANK = 4
 
 
 def rank(when):
     t = tier(when)
     if t == 0:
         return 0
-    if when.weekday() >= 5:
-        return 1
-    return t + 2 if when.weekday() in PREFERRED_DAYS else t - 1
+    return 2 * t - (when.weekday() not in PREFERRED_DAYS)
 
 
 class Slot:
@@ -404,8 +398,10 @@ class Grabber:
 
     # ---------- state ----------
     def existing(self):
+        now = dt.datetime.now(TZ)
         for a in self.icbc.user.get("webAappointments") or []:
-            if a["dlExam"]["code"] == self.exam_code:
+            # a test already taken (e.g. one just failed) stays listed for a while; it is not a booking to hold
+            if a["dlExam"]["code"] == self.exam_code and appt_when(a) > now:
                 return a
         return None
 
@@ -552,7 +548,7 @@ class Grabber:
             sys.exit("you already have a road test booked; it already serves as the backup")
         safe = dt.datetime.now(TZ) + dt.timedelta(hours=49)
         slots = sorted(self.search(dt.date.today()), key=lambda s: s.when)
-        pool = [s for s in slots if s.when > safe and s.tier >= 3] or [s for s in slots if s.when > safe and s.tier > 0]
+        pool = [s for s in slots if s.when > safe and s.tier >= 2] or [s for s in slots if s.when > safe and s.tier > 0]
         if not pool:
             sys.exit("no slot >49 h away to use as a backup")
         slot = pool[0]
@@ -591,9 +587,9 @@ class Grabber:
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--start", type=lambda s: dt.datetime.fromisoformat(s).replace(tzinfo=TZ),
-                   default=dt.datetime(2026, 10, 24, 12, 0, tzinfo=TZ), help="window start (local)")
+                   default=dt.datetime(2026, 11, 9, 0, 0, tzinfo=TZ), help="window start (local)")
     p.add_argument("--end", type=lambda s: dt.datetime.fromisoformat(s).replace(tzinfo=TZ),
-                   default=dt.datetime(2026, 10, 30, 0, 0, tzinfo=TZ), help="window end, exclusive")
+                   default=dt.datetime(2026, 11, 11, 0, 0, tzinfo=TZ), help="window end, exclusive")
     p.add_argument("--pos-id", type=int, help="skip the centre lookup")
     p.add_argument("--exam-code", help="e.g. 5-R-1; default: first eligible exam")
     p.add_argument("--interval", type=int, default=60, help="seconds between checks outside --busy")
