@@ -505,10 +505,11 @@ class Grabber:
         wanted = self.wanted(slots)
         current_rank = Slot(existing).rank if in_window else 0
         better = [s for s in wanted if s.rank > current_rank]
+        taken = not existing and self.taken_test()
         log(f"{len(slots)} open slot(s), {len(wanted)} in window {wanted[:6]}"
-            + (f"; holding {Slot(existing)}{'' if in_window else ' as backup'}" if existing else ""))
-        taken = better and not existing and self.taken_test()
-        if taken:
+            + (f"; holding {Slot(existing)}{'' if in_window else ' as backup'}" if existing else "")
+            + (f"; test taken {appt_when(taken):%m-%d} not cleared yet" if taken else ""))
+        if better and taken:
             # every try would lock the slot and email a code for nothing: watch, push once, wait for it to clear
             log(f"ICBC still lists the test taken {appt_when(taken):%m-%d %H:%M}; not booking {better[0]} until it clears")
             if not self.alerted_taken:

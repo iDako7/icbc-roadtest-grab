@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: "7,37 * * * *"   # backup only: GitHub often skips scheduled runs
   push:
-    branches: ["claude/kick-*"]   # watchdog agent restarts the chain by pushing here
+    branches: ["claude/kick-*", "claude/backup-*"]   # watchdog agent: kick restarts the chain, backup runs --backup once
   workflow_dispatch:
     inputs:
       args:
@@ -12,8 +12,8 @@ on:
         default: ""
 
 concurrency:
-  # one-off runs (--list, --trial) get their own group so they don't queue behind a 6 h hunt
-  group: grab-roadtest-${{ github.event.inputs.args && 'oneoff' || 'hunt' }}
+  # one-off runs (--list, --trial, --backup) get their own group so they don't queue behind a 6 h hunt
+  group: grab-roadtest-${{ (github.event.inputs.args || startsWith(github.ref_name, 'claude/backup-')) && 'oneoff' || 'hunt' }}
   cancel-in-progress: false
 
 permissions:
@@ -31,6 +31,7 @@ jobs:
       GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
       GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
       NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      ARGS: ${{ github.event.inputs.args || (startsWith(github.ref_name, 'claude/backup-') && '--backup --yes') || '' }}
     steps:
       - name: Check secrets
         id: ready
@@ -51,8 +52,8 @@ jobs:
         if: steps.ready.outputs.ok == 'true'
         run: |
           set +e
-          if [ -n "${{ github.event.inputs.args }}" ]; then
-            python -u icbc_roadtest.py ${{ github.event.inputs.args }} 2>&1 | tee "$RUNNER_TEMP/hunt.log"
+          if [ -n "$ARGS" ]; then
+            python -u icbc_roadtest.py $ARGS 2>&1 | tee "$RUNNER_TEMP/hunt.log"
             code=${PIPESTATUS[0]}
             echo "$code" > "$RUNNER_TEMP/exit_code"
             exit $code
@@ -72,7 +73,7 @@ jobs:
           if git fetch -q origin status 2>/dev/null; then git worktree add -q "$dir" origin/status -B status
           else git worktree add -q --orphan -b status "$dir"; fi
           {
-            echo "run: ${{ github.run_id }} (${{ github.event_name }}) args='${{ github.event.inputs.args }}'"
+            echo "run: ${{ github.run_id }} (${{ github.event_name }}) args='$ARGS'"
             echo "finished: $(TZ=America/Vancouver date '+%Y-%m-%d %H:%M:%S %Z')"
             echo "exit code: $(cat "$RUNNER_TEMP/exit_code" 2>/dev/null || echo none) (10 = done: booked best or change would cost \$25)"
             echo; echo '```'; tail -n 120 "$RUNNER_TEMP/hunt.log" 2>/dev/null; echo '```'
@@ -85,9 +86,9 @@ jobs:
         run: gh workflow disable grab-roadtest --repo "$GITHUB_REPOSITORY"
       - name: Start the next run
         # each run hands off to the next so polling never depends on cron;
-        # skipped for manual one-off runs (--list, --trial ...)
+        # skipped for one-off runs (--list, --trial, --backup ...)
         # never chain without secrets, and back off after a failure so a persistent error can't spin
-        if: always() && steps.ready.outputs.ok == 'true' && steps.grab.outputs.done != 'true' && !github.event.inputs.args
+        if: always() && steps.ready.outputs.ok == 'true' && steps.grab.outputs.done != 'true' && env.ARGS == ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
