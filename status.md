@@ -1,126 +1,126 @@
-run: 40451827612 (workflow_dispatch) args=''
-finished: 2026-10-26 23:04:38 PDT
-exit code: none (10 = done: booked best or change would cost $25)
+run: 40458952915 (workflow_dispatch) args=''
+finished: 2026-10-27 04:50:40 PDT
+exit code: 0 (10 = done: booked best or change would cost $25)
 
 ```
-[10-26 22:24:46] 48 open slot(s), 0 in window []
-[10-26 22:25:05] 48 open slot(s), 0 in window []
-[10-26 22:25:24] 48 open slot(s), 0 in window []
-[10-26 22:25:46] 48 open slot(s), 0 in window []
-[10-26 22:26:07] 48 open slot(s), 0 in window []
-[10-26 22:26:29] 48 open slot(s), 0 in window []
-[10-26 22:26:48] 48 open slot(s), 0 in window []
-[10-26 22:27:11] 48 open slot(s), 0 in window []
-[10-26 22:27:35] 48 open slot(s), 0 in window []
-[10-26 22:27:54] 48 open slot(s), 0 in window []
-[10-26 22:28:11] 48 open slot(s), 0 in window []
-[10-26 22:28:33] 48 open slot(s), 0 in window []
-[10-26 22:28:55] 48 open slot(s), 0 in window []
-[10-26 22:29:17] 48 open slot(s), 0 in window []
-[10-26 22:29:37] 48 open slot(s), 0 in window []
-[10-26 22:29:53] 48 open slot(s), 0 in window []
-[10-26 22:30:11] 48 open slot(s), 0 in window []
-[10-26 22:30:30] 48 open slot(s), 0 in window []
-[10-26 22:30:53] 48 open slot(s), 0 in window []
-[10-26 22:31:10] 48 open slot(s), 0 in window []
-[10-26 22:31:34] 48 open slot(s), 0 in window []
-[10-26 22:31:50] 48 open slot(s), 0 in window []
-[10-26 22:32:12] 48 open slot(s), 0 in window []
-[10-26 22:32:29] 48 open slot(s), 0 in window []
-[10-26 22:32:50] 48 open slot(s), 0 in window []
-[10-26 22:33:12] 48 open slot(s), 0 in window []
-[10-26 22:33:30] 48 open slot(s), 0 in window []
-[10-26 22:33:47] 48 open slot(s), 0 in window []
-[10-26 22:34:10] 48 open slot(s), 0 in window []
-[10-26 22:34:33] 48 open slot(s), 0 in window []
-[10-26 22:34:50] 48 open slot(s), 0 in window []
-[10-26 22:35:08] 48 open slot(s), 0 in window []
-[10-26 22:35:30] 48 open slot(s), 0 in window []
-[10-26 22:35:49] 48 open slot(s), 0 in window []
-[10-26 22:36:07] 48 open slot(s), 0 in window []
-[10-26 22:36:26] 48 open slot(s), 0 in window []
-[10-26 22:36:48] 48 open slot(s), 0 in window []
-[10-26 22:37:06] 48 open slot(s), 0 in window []
-[10-26 22:37:25] 48 open slot(s), 0 in window []
-[10-26 22:37:46] 48 open slot(s), 0 in window []
-[10-26 22:38:04] 48 open slot(s), 0 in window []
-[10-26 22:38:25] 48 open slot(s), 0 in window []
-[10-26 22:38:44] 48 open slot(s), 0 in window []
-[10-26 22:39:04] 48 open slot(s), 0 in window []
-[10-26 22:39:21] 48 open slot(s), 0 in window []
-[10-26 22:39:43] 48 open slot(s), 0 in window []
-[10-26 22:40:01] 48 open slot(s), 0 in window []
-[10-26 22:40:21] 48 open slot(s), 0 in window []
-[10-26 22:40:43] 48 open slot(s), 0 in window []
-[10-26 22:41:04] 48 open slot(s), 0 in window []
-[10-26 22:41:23] 48 open slot(s), 0 in window []
-[10-26 22:41:43] 48 open slot(s), 0 in window []
-[10-26 22:42:02] 48 open slot(s), 0 in window []
-[10-26 22:42:25] 48 open slot(s), 0 in window []
-[10-26 22:42:44] 48 open slot(s), 0 in window []
-[10-26 22:43:04] 48 open slot(s), 0 in window []
-[10-26 22:43:24] 48 open slot(s), 0 in window []
-[10-26 22:43:46] 48 open slot(s), 0 in window []
-[10-26 22:44:04] 48 open slot(s), 0 in window []
-[10-26 22:44:26] 48 open slot(s), 0 in window []
-[10-26 22:44:44] 48 open slot(s), 0 in window []
-[10-26 22:45:02] 48 open slot(s), 0 in window []
-[10-26 22:45:20] 48 open slot(s), 0 in window []
-[10-26 22:45:37] 48 open slot(s), 0 in window []
-[10-26 22:45:57] 48 open slot(s), 0 in window []
-[10-26 22:46:18] 48 open slot(s), 0 in window []
-[10-26 22:46:35] 48 open slot(s), 0 in window []
-[10-26 22:46:52] 48 open slot(s), 0 in window []
-[10-26 22:47:14] 48 open slot(s), 0 in window []
-[10-26 22:47:34] 48 open slot(s), 0 in window []
-[10-26 22:47:51] 48 open slot(s), 0 in window []
-[10-26 22:48:10] 48 open slot(s), 0 in window []
-[10-26 22:48:34] 48 open slot(s), 0 in window []
-[10-26 22:48:53] 48 open slot(s), 0 in window []
-[10-26 22:49:16] 48 open slot(s), 0 in window []
-[10-26 22:49:36] 48 open slot(s), 0 in window []
-[10-26 22:50:01] 48 open slot(s), 0 in window []
-[10-26 22:50:18] 48 open slot(s), 0 in window []
-[10-26 22:50:41] 48 open slot(s), 0 in window []
-[10-26 22:51:02] 48 open slot(s), 0 in window []
-[10-26 22:51:19] 48 open slot(s), 0 in window []
-[10-26 22:51:38] 48 open slot(s), 0 in window []
-[10-26 22:51:54] 48 open slot(s), 0 in window []
-[10-26 22:52:13] 48 open slot(s), 0 in window []
-[10-26 22:52:37] 48 open slot(s), 0 in window []
-[10-26 22:52:58] 48 open slot(s), 0 in window []
-[10-26 22:53:14] 48 open slot(s), 0 in window []
-[10-26 22:53:32] 48 open slot(s), 0 in window []
-[10-26 22:53:55] 48 open slot(s), 0 in window []
-[10-26 22:54:11] 48 open slot(s), 0 in window []
-[10-26 22:54:28] 48 open slot(s), 0 in window []
-[10-26 22:54:45] 48 open slot(s), 0 in window []
-[10-26 22:55:03] 48 open slot(s), 0 in window []
-[10-26 22:55:26] 48 open slot(s), 0 in window []
-[10-26 22:55:46] 48 open slot(s), 0 in window []
-[10-26 22:56:08] 48 open slot(s), 0 in window []
-[10-26 22:56:25] 48 open slot(s), 0 in window []
-[10-26 22:56:48] 48 open slot(s), 0 in window []
-[10-26 22:57:09] 48 open slot(s), 0 in window []
-[10-26 22:57:30] 48 open slot(s), 0 in window []
-[10-26 22:57:52] 48 open slot(s), 0 in window []
-[10-26 22:58:14] 48 open slot(s), 0 in window []
-[10-26 22:58:31] 48 open slot(s), 0 in window []
-[10-26 22:58:49] 48 open slot(s), 0 in window []
-[10-26 22:59:08] 48 open slot(s), 0 in window []
-[10-26 22:59:25] 48 open slot(s), 0 in window []
-[10-26 22:59:48] 48 open slot(s), 0 in window []
-[10-26 23:00:12] 48 open slot(s), 0 in window []
-[10-26 23:00:29] 48 open slot(s), 0 in window []
-[10-26 23:00:51] 48 open slot(s), 0 in window []
-[10-26 23:01:16] 48 open slot(s), 0 in window []
-[10-26 23:01:35] 48 open slot(s), 0 in window []
-[10-26 23:01:54] 48 open slot(s), 0 in window []
-[10-26 23:02:18] 48 open slot(s), 0 in window []
-[10-26 23:02:36] 48 open slot(s), 0 in window []
-[10-26 23:03:00] 48 open slot(s), 0 in window []
-[10-26 23:03:20] 48 open slot(s), 0 in window []
-[10-26 23:03:38] 48 open slot(s), 0 in window []
-[10-26 23:03:56] 48 open slot(s), 0 in window []
-[10-26 23:04:20] 48 open slot(s), 0 in window []
+[10-27 02:51:17] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 02:52:09] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 02:53:01] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 02:54:02] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 02:54:58] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 02:56:06] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 02:57:12] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 02:58:16] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 02:59:08] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:00:07] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:01:06] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:02:14] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:03:03] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:03:56] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:05:01] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:05:50] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:06:50] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:07:39] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:08:41] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:09:47] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:10:39] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:11:30] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:12:26] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:13:24] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:14:15] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:15:12] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:16:12] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:17:22] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:18:14] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:19:25] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:20:33] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:21:34] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:22:29] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:23:32] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:24:35] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:25:29] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:26:35] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:27:45] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:28:37] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:29:27] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:30:36] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:31:40] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:32:50] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:33:43] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:34:36] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:35:30] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:36:21] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:37:19] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:38:18] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:39:19] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:40:13] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:41:24] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:42:24] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:43:28] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:44:27] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:45:18] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:46:15] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:47:19] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:48:14] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:49:07] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:50:01] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:51:13] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:52:14] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:53:06] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:54:03] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:55:09] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:56:08] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:57:13] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:58:13] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 03:59:24] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:00:17] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:01:17] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:02:26] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:03:20] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:04:33] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:05:33] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:06:38] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:07:42] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:08:53] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:09:47] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:10:39] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:11:29] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:12:33] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:13:31] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:14:25] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:15:33] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:16:33] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:17:44] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:18:32] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:19:31] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:20:32] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:21:29] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:22:39] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:23:29] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:24:34] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:25:43] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:26:33] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:27:34] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:28:31] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:29:21] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:30:14] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:31:24] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:32:33] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:33:45] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:34:39] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:35:33] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:36:27] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:37:35] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:38:46] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:39:44] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:40:41] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:41:39] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:42:33] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:43:45] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:44:36] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:45:39] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:46:44] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:47:39] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:48:46] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
+[10-27 04:49:49] 48 open slot(s), 0 in window []; holding Tue 02-02 09:55(r3) as backup
 ```
