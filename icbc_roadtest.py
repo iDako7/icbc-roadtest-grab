@@ -18,12 +18,14 @@ booking is only ever upgraded while it is more than 48 h (+ --fee-margin) away.
 
 Time-of-day tier (tier()); Burnaby schools: elementary 8:50-15:00, secondary 8:00-15:40:
   2  09:55-13:20   09:55 10:50 11:30 12:40 13:20: after the morning rush, well before pick-up
-  1  before 09:55 (08:35 09:15) and 14:00
-  0  after 14:15 (school dismissal, then evening rush) and weekends -> never book
+  1  09:15, 14:00
+  0  08:35 (too early for the commute), after 14:15 (school dismissal, evening rush), weekends
 Slot rank (rank(), higher is better): time first, Monday breaks ties.
   4/3  Mon / other weekday, tier 2
   2/1  Mon / other weekday, tier 1
-  0    tier 0 -> never book
+  0    tier 0 -> not booked, except as a last resort: from --anytime-hours before the window
+       starts, with nothing booked in the window, any slot in it is taken (Monday first, then
+       earliest) and then upgraded by rank as usual
 
 Personal info comes from env vars (or .env next to this file):
   ICBC_LAST_NAME, ICBC_LICENCE, ICBC_KEYWORD, optional GMAIL_ADDRESS,
@@ -103,7 +105,7 @@ def tier(when):
     t = when.time()
     if T(9, 55) <= t <= T(13, 30):
         return 2
-    if t < T(9, 55) or t <= T(14, 15):
+    if T(9, 0) <= t <= T(14, 15):
         return 1
     return 0
 
@@ -438,11 +440,14 @@ class Grabber:
                 return self.icbc.slots(self.pos_id, self.exam_code, from_date)
             raise
 
-    def wanted(self, slots):
+    def wanted(self, slots, any_time=False):
         earliest = dt.datetime.now(TZ) + dt.timedelta(minutes=self.args.lead_minutes)
         out = [s for s in slots if self.args.start <= s.when < self.args.end
-               and s.when >= earliest and s.rank > 0]
-        return sorted(out, key=lambda s: (-s.rank, s.when))
+               and s.when >= earliest and (s.rank > 0 or any_time)]
+        return sorted(out, key=lambda s: (-s.rank, s.when.weekday() not in PREFERRED_DAYS, s.when))
+
+    def any_time(self):
+        return dt.datetime.now(TZ) >= self.args.start - dt.timedelta(hours=self.args.anytime_hours)
 
     # ---------- booking ----------
     def take(self, slot, existing):
@@ -505,6 +510,9 @@ class Grabber:
         wanted = self.wanted(slots)
         current_rank = Slot(existing).rank if in_window else 0
         better = [s for s in wanted if s.rank > current_rank]
+        if not better and not in_window and self.any_time():
+            # this close to the window with nothing in it: any slot beats none, upgrades follow by rank
+            better = self.wanted(slots, any_time=True)
         taken = not existing and self.taken_test()
         log(f"{len(slots)} open slot(s), {len(wanted)} in window {wanted[:6]}"
             + (f"; holding {Slot(existing)}{'' if in_window else ' as backup'}" if existing else "")
@@ -618,6 +626,8 @@ def main():
     p.add_argument("--run-minutes", type=float, default=60 * 24 * 7)
     p.add_argument("--relogin-minutes", type=float, default=20)
     p.add_argument("--lead-minutes", type=int, default=180, help="ignore slots starting sooner than this")
+    p.add_argument("--anytime-hours", type=float, default=72,
+                   help="this many hours before --start, with nothing booked in the window, take any slot in it")
     p.add_argument("--fee-margin", type=int, default=60,
                    help="minutes of slack on top of 48 h before a change is considered free")
     p.add_argument("--otp-timeout", type=int, default=600, help="seconds to wait for the emailed code")

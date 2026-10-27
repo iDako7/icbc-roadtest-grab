@@ -85,6 +85,7 @@ def make(fake, **over):
     args = types.SimpleNamespace(
         start=dt.datetime.combine(SAT, dt.time(12), TZ), end=dt.datetime.combine(MON + dt.timedelta(days=4), dt.time(0), TZ),
         pos_id=None, exam_code=None, interval=60, busy="", run_minutes=1, relogin_minutes=20, lead_minutes=180,
+        anytime_hours=0,
         fee_margin=60, otp_timeout=5, dry_run=False, once=True, yes=False)
     vars(args).update(over)
     otp = mock.Mock()
@@ -98,20 +99,20 @@ def make(fake, **over):
 @mock.patch.object(m, "save", lambda *a: None)
 @mock.patch.object(m, "notify", lambda *a, **k: None)
 class GrabberTest(unittest.TestCase):
-    SLOTS = [slot(SAT, "13:00", 1), slot(MON, "08:40", 2), slot(MON, "15:00", 3),
+    SLOTS = [slot(SAT, "13:00", 1), slot(MON, "09:20", 2), slot(MON, "15:00", 3),
              slot(MON + dt.timedelta(days=1), "12:00", 4), slot(MON + dt.timedelta(days=10), "11:00", 5)]
 
     def test_tiers(self):
         at = lambda d, h, mi: m.tier(dt.datetime.combine(d, dt.time(h, mi), TZ))
         self.assertEqual([at(MON, 8, 35), at(MON, 9, 15), at(MON, 9, 55), at(MON, 10, 50), at(MON, 13, 20),
-                          at(MON, 14, 0), at(MON, 14, 55), at(SAT, 13, 0)], [1, 1, 2, 2, 2, 1, 0, 0])
+                          at(MON, 14, 0), at(MON, 14, 55), at(SAT, 13, 0)], [0, 1, 2, 2, 2, 1, 0, 0])
 
     def test_rank_is_time_first_monday_breaks_ties(self):
         tue = MON + dt.timedelta(days=1)
         r = lambda d, h, mi: m.rank(dt.datetime.combine(d, dt.time(h, mi), TZ))
-        order = [r(MON, 9, 55), r(MON, 13, 20), r(tue, 11, 30), r(MON, 8, 35), r(MON, 14, 0), r(tue, 9, 15)]
+        order = [r(MON, 9, 55), r(MON, 13, 20), r(tue, 11, 30), r(MON, 9, 15), r(MON, 14, 0), r(tue, 9, 15)]
         self.assertEqual(order, [4, 4, 3, 2, 2, 1])
-        self.assertEqual([r(MON, 14, 55), r(tue, 15, 35)], [0, 0])
+        self.assertEqual([r(MON, 8, 35), r(MON, 14, 55), r(tue, 15, 35)], [0, 0, 0])
 
     def test_finds_burnaby_claims_centre(self):
         g, _ = make(FakeIcbc(self.SLOTS))
@@ -122,7 +123,7 @@ class GrabberTest(unittest.TestCase):
         fake = FakeIcbc(self.SLOTS)
         g, _ = make(fake)
         g.tick()
-        self.assertEqual(fake.appts[0]["startTm"], "12:00")  # Tuesday midday beats Monday 08:40
+        self.assertEqual(fake.appts[0]["startTm"], "12:00")  # Tuesday midday beats Monday 09:20
         calls = {p: body for _, p, body in fake.calls}
         search = calls["/web/getAvailableAppointments"]
         self.assertEqual((search["aPosID"], search["examType"], search["examDate"], search["lastName"]),
@@ -142,7 +143,7 @@ class GrabberTest(unittest.TestCase):
         self.assertEqual(rebook["action"], "RE-BOOKED")
         self.assertEqual(rebook["appointment"]["startTm"], "13:00")  # the booking being replaced
         self.assertEqual(rebook["appointment"]["drvrDriver"]["licenseNumber"], "12345678")
-        self.assertEqual(fake.appts[0]["startTm"], "08:40")
+        self.assertEqual(fake.appts[0]["startTm"], "09:20")
 
     def test_backup_outside_window_is_replaced_even_if_top_tier(self):
         far = MON + dt.timedelta(days=90)
@@ -150,7 +151,7 @@ class GrabberTest(unittest.TestCase):
         g, _ = make(fake)
         self.assertIsNone(g.tick())
         self.assertIn("/web/rebook", fake.paths())
-        self.assertEqual(fake.appts[0]["startTm"], "08:40")  # tier 2 in window beats tier 4 in January
+        self.assertEqual(fake.appts[0]["startTm"], "09:20")  # second tier in the window beats best tier in January
 
     def test_backup_mode_books_earliest_good_slot_and_keeps_it(self):
         fake = FakeIcbc([slot(MON + dt.timedelta(days=90), "08:35", 1), slot(MON + dt.timedelta(days=91), "13:20", 2),
@@ -176,9 +177,31 @@ class GrabberTest(unittest.TestCase):
         self.assertIn("/web/book", fake.paths())
         self.assertNotIn("/web/rebook", fake.paths())
 
+    def test_skipped_times_wait_until_anytime_hours_before_the_window(self):
+        tue = MON + dt.timedelta(days=1)
+        fake = FakeIcbc([slot(tue, "08:35", 1), slot(MON, "15:35", 2), slot(MON, "08:35", 3)])
+        g, _ = make(fake)  # anytime_hours=0 and the window is days away
+        g.tick()
+        self.assertNotIn("/web/lock", fake.paths())
+
+    def test_close_to_the_window_takes_any_slot_then_upgrades_by_rank(self):
+        tue = MON + dt.timedelta(days=1)
+        far = MON + dt.timedelta(days=90)
+        fake = FakeIcbc([slot(tue, "08:35", 1), slot(MON, "15:35", 2), slot(MON, "08:35", 3)],
+                        appts=[slot(far, "11:30", 8)])  # an out-of-window backup does not count
+        g, _ = make(fake, anytime_hours=24 * 30)
+        g.tick()
+        self.assertEqual((fake.appts[0]["appointmentDt"]["date"], fake.appts[0]["startTm"]),
+                         (MON.isoformat(), "08:35"))  # Monday first, then earliest
+        g.tick()
+        self.assertEqual(fake.paths().count("/web/rebook"), 1, "holding a fallback, other fallbacks are not upgrades")
+        fake.slots.append(slot(tue, "14:00", 4))
+        g.tick()
+        self.assertEqual(fake.appts[0]["startTm"], "14:00")
+
     def test_never_touches_booking_inside_48h(self):
         soon = TODAY + dt.timedelta(days=1)
-        fake = FakeIcbc(self.SLOTS, appts=[slot(soon, "08:40", 9)])
+        fake = FakeIcbc(self.SLOTS, appts=[slot(soon, "09:20", 9)])
         g, _ = make(fake, start=dt.datetime.combine(TODAY, dt.time(0), TZ))
         self.assertEqual(g.tick(), "done")
         self.assertNotIn("/web/getAvailableAppointments", fake.paths())
